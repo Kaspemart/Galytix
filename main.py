@@ -6,21 +6,32 @@ from function_definitions import *
 
 
 if __name__ == '__main__':
-    # 1) SETUP:
+    # 1) Setup:
     set_pandas_output()  # This just improves the Pandas output in the PyCharm terminal
     user_name = get_local_username()
     input_file_name = "phrases"
     input_file_path = f"C:/Users/{user_name}/PycharmProjects/Galytix/{input_file_name}.xlsx"
     embedding_vectors = "GoogleNews-vectors-negative300"
     embedding_vectors_location = f"C:/Users/{user_name}/PycharmProjects/Galytix/{embedding_vectors}.bin"
+    vectors_file = "vectors.csv"
+    vectors_path = f"C:/Users/{user_name}/PycharmProjects/Galytix/{embedding_vectors}"
 
     # 2) Loading the "phrases" file:
     df_raw = read_excel(input_file_path)
     print(df_raw)
 
-    # 3) Loading the word embeddings for first million vectors
-    wv = KeyedVectors.load_word2vec_format(embedding_vectors_location, binary=True, limit=1000000)
-    wv.save_word2vec_format('vectors.csv')  # Saving the embeddings as a flatfile (csv)
+    # 3) Loading the word embeddings for the first million vectors
+    # If the file already exists, we load it from the saved csv file (to avoid having to load the million word embeddings again)
+    if os.path.exists(vectors_path):
+        wv = KeyedVectors.load_word2vec_format(vectors_path, binary=False)
+    # If it does not, we load it for the first time
+    else:
+        wv = KeyedVectors.load_word2vec_format(embedding_vectors_location, binary=True, limit=1000000)
+        wv.save_word2vec_format(vectors_file)
+
+    # 4)
 
 
+
+    # 5)
 
