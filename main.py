@@ -34,6 +34,7 @@ if __name__ == '__main__':
 
     # 5) Creating a new column which calculates the embedding for the whole phrase and normalises it
     phrases["Aggregated Embedding"] = phrases["Embeddings"].apply(lambda embedding: aggregate_phrase_embedding(embedding, w2v_model))
+    save_df_to_excel(output_name="phrases_extended.xlsx", df=phrases)
 
     # 6) Calculating the Euclidian or Cosine distance of each phrase to all other phrases
     phrase_embeddings = np.vstack(phrases['Aggregated Embedding'].values)                 # Converting the column of embeddings into a NumPy array
@@ -43,13 +44,11 @@ if __name__ == '__main__':
     # 7) Viewing this distance matrix
     labels = phrases["Phrases"]
     distance_matrix_df = pd.DataFrame(cosine_distance_matrix, index=labels, columns=labels)
-    visualise_distance_matrix(cosine_distance_matrix)  # Plotting the matrix
+    save_df_to_excel(output_name="distance_matrix.xlsx", df=distance_matrix_df)
+    visualise_distance_matrix(cosine_distance_matrix)
 
+    # 8) Finding the most similar phrase from the phrases file to a given phrase
 
-
-    # 8)
 
 
     # 9)
-
-    save_df_to_excel(output_name="output.xlsx", df=distance_matrix_df)

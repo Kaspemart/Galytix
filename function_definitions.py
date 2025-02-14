@@ -171,7 +171,7 @@ def compute_distance_matrix(embeddings: np.ndarray, metric: str = "cosine") -> n
 def visualise_distance_matrix(distance_matrix: np.ndarray) -> None:
     """
     This function creates a visual representation of the given distance matrix.
-    :return:
+    :return: A visual representation of the given distance matrix.
     """
     plt.figure(figsize=(10, 8))
     plt.ion()
@@ -182,6 +182,44 @@ def visualise_distance_matrix(distance_matrix: np.ndarray) -> None:
     plt.show()
     return None
 
+
+def find_closest_match(input_phrase: str, df: pd.DataFrame, w2v_model, metric: str = "cosine") -> Tuple[str, float]:
+    """
+    This function computes the aggregated embedding of an input phrase and then finds the closest matching phrase from the "phrases" dataframe.
+    :param input_phrase: The phrase provided by the user
+    :param df: A pandas DataFrame containing at least two columns:
+               - "Phrases": The original phrases
+               - "Aggregated Embedding": The aggregated (normalized) embedding for each phrase
+    :param w2v_model: The preloaded Word2Vec model
+    :param metric: The distance metric to use: either "cosine" or "euclidean", default is "cosine"
+    :return: A tuple containing:
+             - The closest matching phrase (str)
+             - The distance (float) between the input phrase and the closest phrase
+    """
+    # Computing embeddings for each token of the given input phrase
+    token_embeddings, missing_tokens = get_word_embeddings(input_phrase, w2v_model)
+
+    # Aggregating the token embeddings to obtain a single normalized vector
+    input_embedding = aggregate_phrase_embedding(token_embeddings, w2v_model)
+
+    # Stacking all aggregated embeddings from the DataFrame into a NumPy array
+    embeddings_matrix = np.vstack(df["Aggregated Embedding"].values)
+
+    # Computing the distances between the input_embedding and each phrase's (from our file) embedding.
+    if metric.lower() == "cosine":
+        similarities = np.dot(embeddings_matrix, input_embedding)
+        distances = 1 - similarities
+    elif metric.lower() == "euclidean":
+        distances = np.linalg.norm(embeddings_matrix - input_embedding, axis=1)
+    else:
+        raise ValueError("Unsupported metric. Please choose 'cosine' or 'euclidean' as the metric argument of the 'compute_distance_matrix' function.")
+
+    # Finding the index of the minimum distance (= the closest match phrase)
+    best_idx = np.argmin(distances)
+    closest_phrase = df.iloc[best_idx]["Phrases"]
+    closest_distance = distances[best_idx]
+
+    return closest_phrase, closest_distance
 
 
 
