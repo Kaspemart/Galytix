@@ -1,6 +1,7 @@
 # IMPORTS:
 import pandas as pd
 import os
+import re
 # -----------------------------------------------------------------------------------------------------------------
 
 
@@ -46,6 +47,19 @@ def read_excel(file_path: str, sheet_name=0, skiprows=None, nrows=None) -> pd.Da
         raise ValueError(f"Invalid sheet name: {ve}")
     except Exception as e:
         raise RuntimeError(f"An unexpected error occurred: {e}")
+
+
+def preprocess_text(phrase: str) -> str:
+    """
+    This function takes a phrase, converts it to lowercase and removes punctuation, question marks, and other unnecessary characters.
+    :param phrase: Individual phrase from the phrases file
+    :return: Preprocessed phrase
+    """
+    phrase = phrase.lower()
+    phrase = re.sub(r'[^\w\s]', '', phrase)
+    return phrase
+
+
 
 
 
