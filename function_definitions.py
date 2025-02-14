@@ -110,11 +110,35 @@ def get_word_embeddings(phrase: str, w2v_model: word2vec.KeyedVectors) -> Tuple[
     return embeddings, missing_tokens
 
 
-#def get_phrase_embeddings() -> x:
+def aggregate_phrase_embedding(embeddings: dict, w2v_model: word2vec.KeyedVectors) -> np.ndarray:
     """
     This function takes the single token embeddings and aggregates them into a single normalised vector for the entire phrase.
-    This is done by
-    :
+    This is done by summing the embeddings and normalising this sum
+    :param embeddings: Dictionary mapping tokens to their embedding vectors
+    :param w2v_model: The loaded Word2Vec model (used here to get the vector size)
+    :return: A normalised numpy array representing the aggregated phrase embedding. If no embeddings are present, it returns a zero vector.
     """
+    # If we have some embeddings in the dict
+    if embeddings and len(embeddings) > 0:
+        embedding_vectors = list(embeddings.values())                    # Extracting the vectors from the dict
+        aggregated_vector = np.sum(np.array(embedding_vectors), axis=0)  # Computing the sum of the vectors (axis=0 means row by row)
+
+        # Normalising the sum because the Euclidian norm should be = 1 (important for calculating cosine similarity)
+        norm = np.linalg.norm(aggregated_vector)
+        if norm > 0:
+            aggregated_vector = aggregated_vector / norm
+        # We do not need to normalise a zero vector if there is one
+        return aggregated_vector
+
+    # If there is no embedding, we return a zero vector
+    else:
+        return np.zeros(w2v_model.vector_size)
+
+
+
+
+
+
+
 
 

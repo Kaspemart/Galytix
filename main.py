@@ -30,9 +30,18 @@ if __name__ == '__main__':
         w2v_model.save_word2vec_format(vectors_file)
 
     # 4) Creating 2 new columns for: embeddings and also missing tokens from our model (this can be processed further if necessary)
-    phrases[['Embeddings', 'Missing Tokens']] = phrases['Phrases'].apply(lambda phrase: pd.Series(get_word_embeddings(phrase, w2v_model)))
+    phrases[["Embeddings", "Missing Tokens"]] = phrases["Phrases"].apply(lambda phrase: pd.Series(get_word_embeddings(phrase, w2v_model)))
+    # Note: Each word (token) is represented by a high-dimensional vector
+
+    # 5) Creating a new column which calculates the embedding for the whole phrase and normalises it
+    phrases["Aggregated Embedding"] = phrases["Embeddings"].apply(lambda embedding: aggregate_phrase_embedding(embedding, w2v_model))
     save_df_to_excel(output_name="output.xlsx", df=phrases)
 
+    # 6)
 
-    # 5)
+
+    # 7)
+
+
+    # 8)
 
