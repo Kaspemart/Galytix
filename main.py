@@ -35,9 +35,12 @@ if __name__ == '__main__':
 
     # 5) Creating a new column which calculates the embedding for the whole phrase and normalises it
     phrases["Aggregated Embedding"] = phrases["Embeddings"].apply(lambda embedding: aggregate_phrase_embedding(embedding, w2v_model))
-    save_df_to_excel(output_name="output.xlsx", df=phrases)
 
-    # 6)
+    # 6) Calculating the Euclidian or Cosine distance of each phrase to all other phrases
+    phrase_embeddings = np.vstack(phrases['Aggregated Embedding'].values)                 # Converting the column of embeddings into a NumPy array
+    cosine_distance_matrix = compute_distance_matrix(phrase_embeddings, metric='cosine')  # Computing the distance matrix
+
+
 
 
     # 7)
@@ -45,3 +48,4 @@ if __name__ == '__main__':
 
     # 8)
 
+save_df_to_excel(output_name="output.xlsx", df=phrases)

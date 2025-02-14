@@ -4,6 +4,7 @@ import numpy as np
 import os
 import re
 import logging
+from scipy.spatial.distance import cdist  # For computing Euclidean distance
 from typing import Tuple, List, Dict
 from gensim.models import word2vec
 # -----------------------------------------------------------------------------------------------------------------
@@ -134,6 +135,32 @@ def aggregate_phrase_embedding(embeddings: dict, w2v_model: word2vec.KeyedVector
     else:
         return np.zeros(w2v_model.vector_size)
 
+
+def compute_distance_matrix(embeddings: np.ndarray, metric: str = "cosine") -> np.ndarray:
+    """
+    This function computes the pairwise distance matrix for the given embeddings using either Cosine or Euclidean distance.
+    To be memory computationally efficient, I will try to use vectorised operations in numpy as these are the most optimised.
+    The "cdist" is much faster than Python loops and the np.dot calculation is also much faster because it is vectorised.
+    :param embeddings: A NumPy array of shape (n, d) where n is the number of phrases and d is the embedding dimension.
+                       It's assumed that the embeddings are normalized if using cosine distance.
+    :param metric: A string specifying the metric to use: either "cosine" or "euclidean", default is "cosine".
+    :return: A NumPy array of shape (n, n) representing the pairwise distance matrix.
+    """
+    # If the user wants cosine distance
+    if metric.lower() == "cosine":
+        # If the embeddings are normalized, the cosine similarity is the dot product.
+        similarity_matrix = np.dot(embeddings, embeddings.T)
+        distance_matrix = 1 - similarity_matrix
+
+    # If the user wants euclidean distance
+    elif metric.lower() == "euclidean":
+        distance_matrix = cdist(embeddings, embeddings, metric="euclidean")
+
+    # If the user inputs an invalid metric
+    else:
+        raise ValueError("Unsupported metric. Please choose 'cosine' or 'euclidean' as the metric argument of the 'compute_distance_matrix' function.")
+
+    return distance_matrix
 
 
 
