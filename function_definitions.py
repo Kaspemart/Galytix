@@ -1,7 +1,10 @@
 # IMPORTS:
 import pandas as pd
+import numpy as np
 import os
 import re
+from typing import Tuple, List, Dict
+from gensim.models import word2vec
 # -----------------------------------------------------------------------------------------------------------------
 
 
@@ -60,7 +63,31 @@ def preprocess_text(phrase: str) -> str:
     return phrase
 
 
+def get_word_embeddings(phrase: str, w2v_model: word2vec.KeyedVectors) -> Tuple[Dict[str, np.ndarray], List[str]]:
+    """
+    This function computes a normalized phrase embedding by summing word embeddings.
+    :param phrase: Individual phrase from the phrases file
+    :param w2v_model: Our loaded word2Vec model
+    :return: Normalized phrase embedding
+    - A normalized numpy array representing the phrase, or a zero vector if no words are found.
+    """
+    # Firstly pre-processing the phrase by converting to lowercase & removing punctuation and other symbols like "?!."
+    preprocessed_phrase = preprocess_text(phrase)
 
+    # Splitting the phrase into a list of strings = individual tokens
+    tokens = preprocessed_phrase.split()
+
+    embeddings = {}     # Embeddings for each token
+    missing_tokens = [] # List of tokens which are not in our w2v_model
+
+    # Creating the embeddings for each token
+    for token in tokens:
+        # If the token is in the loaded w2v_model, we add it to our dictionary
+        if token in w2v_model:
+            embeddings[token] = w2v_model[token]
+        else:
+            missing_tokens.append(token)
+    return embeddings, missing_tokens
 
 
 
