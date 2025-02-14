@@ -48,7 +48,14 @@ if __name__ == '__main__':
     visualise_distance_matrix(cosine_distance_matrix)
 
     # 8) Finding the most similar phrase from the phrases file to a given phrase
+    # Prompting the user to enter a phrase and choose a metric (defaults to "Cosine" if user does not write anything)
+    user_input = input("Enter any phrase: ")
+    user_metric = input("Enter the distance metric (cosine/euclidean) [cosine]: ").strip().lower() or "cosine"
 
+    # Finding the closest matching phrase
+    closest_phrase, closest_distance = find_closest_match(user_input, phrases, w2v_model, metric=user_metric)
 
+    # Displaying the results
+    print("Closest matching phrase:", closest_phrase)
+    print("The {} distance is: {:.4f}".format(user_metric.capitalize(), closest_distance))
 
-    # 9)
