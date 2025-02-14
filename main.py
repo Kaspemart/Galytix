@@ -1,5 +1,6 @@
 # IMPORTS:
 import gensim
+import pandas as pd
 from gensim.models import KeyedVectors
 from function_definitions import *
 # -----------------------------------------------------------------------------------------------------
@@ -30,7 +31,8 @@ if __name__ == '__main__':
 
     # 4) Creating 2 new columns for: embeddings and also missing tokens from our model (this can be processed further if necessary)
     phrases[['Embeddings', 'Missing Tokens']] = phrases['Phrases'].apply(lambda phrase: pd.Series(get_word_embeddings(phrase, w2v_model)))
-    print(phrases)
+    save_df_to_excel(output_name="output.xlsx", df=phrases)
+
 
     # 5)
 

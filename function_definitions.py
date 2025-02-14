@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import os
 import re
+import logging
 from typing import Tuple, List, Dict
 from gensim.models import word2vec
 # -----------------------------------------------------------------------------------------------------------------
@@ -52,6 +53,26 @@ def read_excel(file_path: str, sheet_name=0, skiprows=None, nrows=None) -> pd.Da
         raise RuntimeError(f"An unexpected error occurred: {e}")
 
 
+def save_df_to_excel(output_name: str, df: pd.DataFrame, sheet_name: str = "Sheet1") -> None:
+    """
+    This function saves a dataframe to an Excel file.
+    :param output_name: The name of the Excel file you want to create
+    :param df: The dataframe you want to save to Excel
+    :param sheet_name: The name of the sheet you want to save to (optional)
+    """
+    # Validating the input DataFrame
+    if not isinstance(df, pd.DataFrame):
+        raise TypeError("The 'df' parameter must be a pandas DataFrame.")
+
+    try:
+        with pd.ExcelWriter(output_name, engine='openpyxl') as writer:
+            df.to_excel(writer, index=False, sheet_name=sheet_name)
+    except Exception as e:
+        logging.exception(f"An error occurred while saving the DataFrame to Excel: {e}.")
+        raise
+    return None
+
+
 def preprocess_text(phrase: str) -> str:
     """
     This function takes a phrase, converts it to lowercase and removes punctuation, question marks, and other unnecessary characters.
@@ -65,11 +86,10 @@ def preprocess_text(phrase: str) -> str:
 
 def get_word_embeddings(phrase: str, w2v_model: word2vec.KeyedVectors) -> Tuple[Dict[str, np.ndarray], List[str]]:
     """
-    This function computes a normalized phrase embedding by summing word embeddings.
+    This function creates embeddings for each individual tokens in the phrases and also logs missing tokens not found in our model.
     :param phrase: Individual phrase from the phrases file
     :param w2v_model: Our loaded word2Vec model
-    :return: Normalized phrase embedding
-    - A normalized numpy array representing the phrase, or a zero vector if no words are found.
+    :return: Dictionary of embeddings and a list of missing tokens
     """
     # Firstly pre-processing the phrase by converting to lowercase & removing punctuation and other symbols like "?!."
     preprocessed_phrase = preprocess_text(phrase)
@@ -90,5 +110,11 @@ def get_word_embeddings(phrase: str, w2v_model: word2vec.KeyedVectors) -> Tuple[
     return embeddings, missing_tokens
 
 
+#def get_phrase_embeddings() -> x:
+    """
+    This function takes the single token embeddings and aggregates them into a single normalised vector for the entire phrase.
+    This is done by
+    :
+    """
 
 
