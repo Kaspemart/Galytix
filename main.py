@@ -1,6 +1,4 @@
 # IMPORTS:
-import gensim
-import pandas as pd
 from gensim.models import KeyedVectors
 from function_definitions import *
 # -----------------------------------------------------------------------------------------------------
@@ -48,4 +46,4 @@ if __name__ == '__main__':
 
     # 8)
 
-save_df_to_excel(output_name="output.xlsx", df=phrases)
+    save_df_to_excel(output_name="output.xlsx", df=phrases)
