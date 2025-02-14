@@ -1,4 +1,5 @@
 # IMPORTS:
+import numpy as np
 from gensim.models import KeyedVectors
 from function_definitions import *
 # -----------------------------------------------------------------------------------------------------
@@ -36,14 +37,19 @@ if __name__ == '__main__':
 
     # 6) Calculating the Euclidian or Cosine distance of each phrase to all other phrases
     phrase_embeddings = np.vstack(phrases['Aggregated Embedding'].values)                 # Converting the column of embeddings into a NumPy array
+    # Here you can choose the metric to be cosine or euclidean
     cosine_distance_matrix = compute_distance_matrix(phrase_embeddings, metric='cosine')  # Computing the distance matrix
 
+    # 7) Viewing this distance matrix
+    labels = phrases["Phrases"]
+    distance_matrix_df = pd.DataFrame(cosine_distance_matrix, index=labels, columns=labels)
+    visualise_distance_matrix(cosine_distance_matrix)  # Plotting the matrix
 
-
-
-    # 7)
 
 
     # 8)
 
-    save_df_to_excel(output_name="output.xlsx", df=phrases)
+
+    # 9)
+
+    save_df_to_excel(output_name="output.xlsx", df=distance_matrix_df)

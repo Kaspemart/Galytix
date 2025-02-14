@@ -7,6 +7,8 @@ import logging
 from scipy.spatial.distance import cdist  # For computing Euclidean distance
 from typing import Tuple, List, Dict
 from gensim.models import word2vec
+import matplotlib.pyplot as plt
+import seaborn as sns
 # -----------------------------------------------------------------------------------------------------------------
 
 
@@ -160,8 +162,25 @@ def compute_distance_matrix(embeddings: np.ndarray, metric: str = "cosine") -> n
     else:
         raise ValueError("Unsupported metric. Please choose 'cosine' or 'euclidean' as the metric argument of the 'compute_distance_matrix' function.")
 
+    # Sometimes there are very tiny values close to zero on the diagonals but not exactly zero (due to the calculations like dot product), we can fix this:
+    np.fill_diagonal(distance_matrix, 0)
+
     return distance_matrix
 
+
+def visualise_distance_matrix(distance_matrix: np.ndarray) -> None:
+    """
+    This function creates a visual representation of the given distance matrix.
+    :return:
+    """
+    plt.figure(figsize=(10, 8))
+    plt.ion()
+    sns.heatmap(distance_matrix, cmap="viridis")
+    plt.title("Cosine Distance Matrix")
+    plt.xlabel("Phrases")
+    plt.ylabel("Phrases")
+    plt.show()
+    return None
 
 
 
