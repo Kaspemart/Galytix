@@ -22,7 +22,12 @@ if __name__ == '__main__':
 
     # 3) Loading the word embeddings for the first million vectors
     # If the file already exists, we load it from the saved csv file (to avoid having to save the million word embeddings again)
-
+    if os.path.exists(vectors_path):
+        wv = KeyedVectors.load_word2vec_format(vectors_path, binary=False)
+    # If it does not, we load it for the first time
+    else:
+        wv = KeyedVectors.load_word2vec_format(embedding_vectors_location, binary=True, limit=1000000)
+        wv.save_word2vec_format(vectors_file)
 
     # 4) Converting the phrases to lowercase & Removing punctuation and other symbols like "?!."
     phrases['Preprocessed Phrases'] = phrases['Phrases'].apply(preprocess_text)
