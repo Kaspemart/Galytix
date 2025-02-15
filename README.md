@@ -11,8 +11,10 @@ measures, both in batch and on the fly, using Euclidean or cosine distance.
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 
-## HOW TO STRUCTURE AND OPTIMISE THE CODE IN THE FUTURE:
-* 
+## HOW TO STRUCTURE AND OPTIMISE THE CODE IN THE FUTURE (IF I HAD MORE TIME):
+* The code could be even more OOP-friendly and could be structured into classes for instance
+* I would also better handle the "# 1) Setup", because now it
+* The function os.getlogin() which I used may not work on all environments (for getting the local username)
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 ## Project info
@@ -23,8 +25,7 @@ measures, both in batch and on the fly, using Euclidean or cosine distance.
 ------------------------------------------------------------------------------------------------------------------------------------------
 
 ## How to run the app
-* XXX
-* XXX
+* 
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -21,6 +21,7 @@ if __name__ == '__main__':
     embedding_vectors_location = f"C:/Users/{user_name}/PycharmProjects/Galytix/{embedding_vectors}.bin"
     vectors_file = "vectors.csv"
     vectors_path = f"C:/Users/{user_name}/PycharmProjects/Galytix/{vectors_file}"
+    pickle_file = f"C:/Users/{user_name}/PycharmProjects/Galytix/w2v_model.pkl"  # optional
 
     # 2) Loading the "phrases" file:
     logging.info("Loading the phrases file from %s", input_file_path)
@@ -28,16 +29,11 @@ if __name__ == '__main__':
     logging.info("Successfully loaded the phrases file with %d rows.", len(phrases))
 
     # 3) Loading the word embeddings for the first million vectors
-    # If the vectors file already exists, we load it from the saved vectors.csv file (to avoid having to save the million word embeddings again)
-    if os.path.exists(vectors_path):
-        logging.info("Loading word embeddings from an already saved file: %s", vectors_path)
-        w2v_model = KeyedVectors.load_word2vec_format(vectors_path, binary=False)
-    # If it does not, we load it for the first time
-    else:
-        logging.info("Saved embeddings file not found. Loading the embeddings from a binary file: %s", embedding_vectors_location)
-        w2v_model = KeyedVectors.load_word2vec_format(embedding_vectors_location, binary=True, limit=1000000)
-        w2v_model.save_word2vec_format(vectors_file)
-        logging.info("Saved word embeddings to %s", vectors_file)
+    w2v_model = load_word_embeddings(vectors_path=vectors_path,
+                                     embedding_vectors_location=embedding_vectors_location,
+                                     vectors_file=vectors_file,
+                                     limit=1000000,
+                                     pickle_file=pickle_file)
 
     # 4) Creating 2 new columns for: embeddings and also missing tokens from our model (this can be processed further if necessary)
     logging.info("Generating token embeddings and missing tokens for each phrase...")

@@ -4,9 +4,10 @@ import numpy as np
 import os
 import re
 import logging
+import pickle
 from scipy.spatial.distance import cdist  # For computing Euclidean distance
 from typing import Tuple, List, Dict
-from gensim.models import word2vec
+from gensim.models import word2vec, KeyedVectors
 import matplotlib.pyplot as plt
 import seaborn as sns
 # -----------------------------------------------------------------------------------------------------------------
@@ -293,6 +294,46 @@ def interactive_phrase_lookup(phrases: pd.DataFrame, w2v_model: word2vec.KeyedVe
     return None
 
 
+def load_word_embeddings(vectors_path: str, embedding_vectors_location: str, vectors_file: str, limit, pickle_file: str = None) -> word2vec.KeyedVectors:
+    """
+    This function loads the word embeddings for the first million vectors. If a pickle file is provided and exists, it loads the model from it
+    to save time. Otherwise, it loads it from the binary file, saves to the text file, and optionally pickles the model.
+    :param vectors_path: Path to the saved embeddings file (text format).
+    :param embedding_vectors_location: Path to the binary file of pretrained embeddings.
+    :param vectors_file: Path to save the embeddings in text format if they are loaded from binary.
+    :param limit: The number of vectors you want to load
+    :param pickle_file: Optional path to a pickle file for caching.
+    :return: A KeyedVectors object with the word embeddings.
+    """
+    try:
+        # If a pickle file is specified and exists, load from it
+        if pickle_file and os.path.exists(pickle_file):
+            logging.info("Loading word embeddings from pickle file: %s", pickle_file)
+            with open(pickle_file, 'rb') as f:
+                w2v_model = pickle.load(f)
+            return w2v_model
 
+        # If the saved text file exists, load using memory mapping
+        if os.path.exists(vectors_path):
+            logging.info("Loading word embeddings from saved file: %s", vectors_path)
+            w2v_model = KeyedVectors.load_word2vec_format(vectors_path, binary=False)
+        else:
+            # Otherwise, load from the binary file and save as text
+            logging.info("Saved embeddings file not found. Loading from binary file: %s", embedding_vectors_location)
+            w2v_model = KeyedVectors.load_word2vec_format(embedding_vectors_location, binary=True, limit=limit)
+            w2v_model.save_word2vec_format(vectors_file)
+            logging.info("Saved word embeddings to %s", vectors_file)
+
+        # Optionally, cache the model using pickle for faster future loads
+        if pickle_file:
+            logging.info("Pickling the word embeddings to: %s", pickle_file)
+            with open(pickle_file, 'wb') as f:
+                pickle.dump(w2v_model, f)
+
+        return w2v_model
+
+    except Exception as e:
+        logging.exception("An error occurred while loading word embeddings: %s", e)
+        raise RuntimeError(f"Failed to load word embeddings: {e}")
 
 
