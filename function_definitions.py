@@ -99,6 +99,16 @@ def get_word_embeddings(phrase: str, w2v_model: word2vec.KeyedVectors) -> Tuple[
     :param w2v_model: Our loaded word2Vec model
     :return: Dictionary of embeddings and a list of missing tokens
     """
+    # Ensuring that the phrase can be converted to a string
+    try:
+        phrase = str(phrase)
+    except Exception as e:
+        raise ValueError(f"Invalid phrase input; must be convertible to string. {e}")
+
+    # Validate that the model supports the necessary operations
+    if not (hasattr(w2v_model, '__contains__') and hasattr(w2v_model, '__getitem__')):
+        raise TypeError("w2v_model must support containment (in operator) and item retrieval (bracket notation).")
+
     # Firstly pre-processing the phrase by converting to lowercase & removing punctuation and other symbols like "?!."
     preprocessed_phrase = preprocess_text(phrase)
 
@@ -111,10 +121,16 @@ def get_word_embeddings(phrase: str, w2v_model: word2vec.KeyedVectors) -> Tuple[
     # Creating the embeddings for each token
     for token in tokens:
         # If the token is in the loaded w2v_model, we add it to our dictionary
-        if token in w2v_model:
-            embeddings[token] = w2v_model[token]
-        else:
+        try:
+            if token in w2v_model:
+                embeddings[token] = w2v_model[token]
+            else:
+                missing_tokens.append(token)
+        except Exception as e:
+            # Logging the exception and considering the token as missing
+            logging.exception(f"Error retrieving embedding for token '{token}': {e}")
             missing_tokens.append(token)
+
     return embeddings, missing_tokens
 
 
