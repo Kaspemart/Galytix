@@ -11,10 +11,30 @@ measures, both in batch and on the fly, using Euclidean or cosine distance.
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 
-## HOW TO STRUCTURE AND OPTIMISE THE CODE IN THE FUTURE (IF I HAD MORE TIME):
+## How to structure and optimise the code in the future (if I had more time):
 * The code could be even more OOP-friendly and could be structured into classes for instance
-* I would also better handle the "# 1) Setup", because now it
-* The function os.getlogin() which I used may not work on all environments (for getting the local username)
+* There could also be a nice user-friendly interface created
+* The code cold probably be optimised even further with regards to speed and memory efficience
+* I would improve the structure of the project, maybe something like:
+Galytix/
+├── galytix/
+│   ├── __init__.py
+│   ├── data_io.py
+│   ├── embedding.py
+│   ├── similarity.py
+│   ├── visualization.py
+│   ├── interactive.py
+│   └── utils.py
+├── tests/
+│   ├── __init__.py
+│   ├── test_data_io.py
+│   ├── test_embedding.py
+│   ├── test_similarity.py
+│   └── test_visualization.py
+├── main.py
+├── setup.py
+├── requirements.txt
+└── README.md
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 ## Project info
