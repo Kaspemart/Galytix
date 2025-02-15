@@ -222,7 +222,44 @@ def find_closest_match(input_phrase: str, df: pd.DataFrame, w2v_model, metric: s
     return closest_phrase, closest_distance
 
 
+def interactive_phrase_lookup(phrases: pd.DataFrame, w2v_model) -> None:
+    """
+    This function interactively prompts the user to input a phrase and a distance metric. It then
+    finds the closest matching phrase from the DataFrame using the given Word2Vec model,
+    and displays the result. After each query, the user is asked if they wish to continue or not.
+    :param phrases: A pandas DataFrame with at least two columns:
+                    - "Phrases": The original phrases
+                    - "Aggregated Embedding": The aggregated (normalized) embedding for each phrase
+    :param w2v_model: The preloaded Word2Vec model (gensim KeyedVectors)
+    :return: This function does not return anything, it only runs
+    """
+    while True:
+        # Prompting user for the input phrase
+        user_input = input("Enter any phrase: ").strip()
+        if not user_input:
+            print("No phrase entered. Please try again and enter some phrase.")
+            continue
 
+        # Prompting user for the distance metric (default is "cosine")
+        user_metric = input("Enter the distance metric (cosine/euclidean) [cosine]: ").strip().lower() or "cosine"
+
+        # Validation
+        while user_metric not in ("cosine", "euclidean"):
+            print("Invalid input. Please enter 'cosine' or 'euclidean'.")
+            user_metric = input("Enter the distance metric (cosine/euclidean) [cosine]: ").strip().lower() or "cosine"
+
+        # Finding the closest matching phrase
+        closest_phrase, closest_distance = find_closest_match(user_input, phrases, w2v_model, metric=user_metric)
+
+        # Displaying the results
+        print("Closest matching phrase:", closest_phrase)
+        print("The {} distance is: {:.4f}".format(user_metric.capitalize(), closest_distance))
+
+        # Asking the user if they want to continue with another phrase or not
+        continue_choice = input("Would you like to continue with another phrase? (yes/no): ").strip().lower()
+        if continue_choice not in ("yes", "y"):
+            print("Exiting the program. Goodbye!")
+            break
 
 
 
