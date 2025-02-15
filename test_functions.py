@@ -1,6 +1,5 @@
 # IMPORTS:
 import pytest
-import pandas as pd
 from function_definitions import *
 # ---------------------------------------------------------------------------------------------------------------------------------
 # IMPORTANT: If using pytest, all tests must start with "test_"
@@ -9,13 +8,29 @@ from function_definitions import *
 # ---------------------------------------------------------------------------------------------------------------------------------
 
 
-# TESTING THE "XXX" FUNCTION:
+# TESTING THE "preprocess_text" FUNCTION:
 @pytest.mark.parametrize("input_value, expected_output",
                             [
-                                (X, Y),
+                                ("Hello, World!", "hello world"),
+                                ("TESTING 123!!!", "testing 123"),
+                                ("What's up?", "whats up"),
+                                ("Hello!! How are you??", "hello how are you"),
+                                ("No punctuation", "no punctuation"),
+                                ("", ""),
                             ]
-                         )
-def test_XXX(input_value: XXX, expected_output: XXX):
-    """This function tests the "XXX" function."""
-    assert XXX(input_value) == expected_output
+                        )
+def test_preprocess_text(input_value: str, expected_output: str):
+    """This function tests the preprocess_text function."""
+    assert preprocess_text(input_value) == expected_output
 
+# ---------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+# ---------------------------------------------------------------------------------------------------------------------------------
