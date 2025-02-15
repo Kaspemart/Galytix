@@ -1,5 +1,8 @@
 # Galytix-Casestudy
-This project is about creating a tool which XXX.
+This project is about integrating pretrained Word2Vec embeddings into a data processing pipeline to compute semantic distances between
+phrases. The pipeline downloads and converts one million vectors from a binary format using gensim, assigns each word its corresponding
+embedding, and approximates phrase-level vectors through normalized aggregation of individual word vectors. It then calculates similarity
+measures, both in batch and on the fly, using Euclidean or cosine distance.
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 
