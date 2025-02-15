@@ -49,7 +49,8 @@ def read_excel(file_path: str, sheet_name=0, skiprows=None, nrows=None) -> pd.Da
         # Reading the data
         df = pd.read_excel(file_path, sheet_name=sheet_name, skiprows=skiprows, nrows=nrows)
         return df
-
+    except FileNotFoundError as fnfe:
+        raise FileNotFoundError(f"Invalid sheet name: {fnfe}")
     except ValueError as ve:
         raise ValueError(f"Invalid sheet name: {ve}")
     except Exception as e:
