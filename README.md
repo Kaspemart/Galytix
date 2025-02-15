@@ -16,7 +16,7 @@ measures, both in batch and on the fly, using Euclidean or cosine distance.
 * There could also be a nice user-friendly interface created
 * The code cold probably be optimised even further with regards to speed and memory efficience
 * I would improve the structure of the project, maybe something like:
-Galytix/
+* Galytix/
 ├── galytix/
 │   ├── __init__.py
 │   ├── data_io.py
