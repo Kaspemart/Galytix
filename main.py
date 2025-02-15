@@ -6,8 +6,7 @@ import logging
 
 
 # Configuring the basic logging:
-logging.basicConfig(level=logging.INFO,
-                    format="%(asctime)s - %(levelname)s - %(message)s")
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 
 if __name__ == '__main__':
@@ -21,7 +20,7 @@ if __name__ == '__main__':
     embedding_vectors = "GoogleNews-vectors-negative300"
     embedding_vectors_location = f"C:/Users/{user_name}/PycharmProjects/Galytix/{embedding_vectors}.bin"
     vectors_file = "vectors.csv"
-    vectors_path = f"C:/Users/{user_name}/PycharmProjects/Galytix/{embedding_vectors}"
+    vectors_path = f"C:/Users/{user_name}/PycharmProjects/Galytix/{vectors_file}"
 
     # 2) Loading the "phrases" file:
     logging.info("Loading the phrases file from %s", input_file_path)
@@ -29,11 +28,10 @@ if __name__ == '__main__':
     logging.info("Successfully loaded the phrases file with %d rows.", len(phrases))
 
     # 3) Loading the word embeddings for the first million vectors
-    # If the file already exists, we load it from the saved csv file (to avoid having to save the million word embeddings again)
+    # If the vectors file already exists, we load it from the saved vectors.csv file (to avoid having to save the million word embeddings again)
     if os.path.exists(vectors_path):
         logging.info("Loading word embeddings from an already saved file: %s", vectors_path)
         w2v_model = KeyedVectors.load_word2vec_format(vectors_path, binary=False)
-        logging.info("Saved word embeddings to %s", vectors_file)
     # If it does not, we load it for the first time
     else:
         logging.info("Saved embeddings file not found. Loading the embeddings from a binary file: %s", embedding_vectors_location)

@@ -212,7 +212,7 @@ def visualise_distance_matrix(distance_matrix: np.ndarray) -> None:
     return None
 
 
-def find_closest_match(input_phrase: str, df: pd.DataFrame, w2v_model, metric: str = "cosine") -> Tuple[str, float]:
+def find_closest_match(input_phrase: str, df: pd.DataFrame, w2v_model: word2vec.KeyedVectors, metric: str = "cosine") -> Tuple[str, float]:
     """
     This function computes the aggregated embedding of an input phrase and then finds the closest matching phrase from the "phrases" dataframe.
     :param input_phrase: The phrase provided by the user
@@ -251,7 +251,7 @@ def find_closest_match(input_phrase: str, df: pd.DataFrame, w2v_model, metric: s
     return closest_phrase, closest_distance
 
 
-def interactive_phrase_lookup(phrases: pd.DataFrame, w2v_model) -> None:
+def interactive_phrase_lookup(phrases: pd.DataFrame, w2v_model: word2vec.KeyedVectors) -> None:
     """
     This function interactively prompts the user to input a phrase and a distance metric. It then
     finds the closest matching phrase from the DataFrame using the given Word2Vec model,
@@ -289,6 +289,10 @@ def interactive_phrase_lookup(phrases: pd.DataFrame, w2v_model) -> None:
         if continue_choice not in ("yes", "y"):
             print("Exiting the program. Goodbye!")
             break
+
+    return None
+
+
 
 
 
