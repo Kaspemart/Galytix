@@ -153,6 +153,14 @@ def compute_distance_matrix(embeddings: np.ndarray, metric: str = "cosine") -> n
     :param metric: A string specifying the metric to use: either "cosine" or "euclidean", default is "cosine".
     :return: A NumPy array of shape (n, n) representing the pairwise distance matrix.
     """
+    # Validating the input of embeddings:
+    if not isinstance(embeddings, np.ndarray):
+        raise TypeError("The 'embeddings' parameter must be a numpy array.")
+    if embeddings.ndim != 2:
+        raise ValueError("The 'embeddings' array must be two-dimensional (shape: (n, d)).")
+    if embeddings.size == 0:
+        raise ValueError("The 'embeddings' array is empty.")
+
     # If the user wants cosine distance
     if metric.lower() == "cosine":
         # If the embeddings are normalized, the cosine similarity is the dot product.
