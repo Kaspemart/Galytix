@@ -337,3 +337,11 @@ def load_word_embeddings(vectors_path: str, embedding_vectors_location: str, vec
         raise RuntimeError(f"Failed to load word embeddings: {e}")
 
 
+def get_base_dir():
+    """
+    This function returns the base directory for this specific project. If the "GALYTIX_BASE_DIR"
+    environment variable has been set then that value will be used otherwise it defaults to the current working directory.
+    """
+    return os.environ.get("GALYTIX_BASE_DIR", os.getcwd())
+
+

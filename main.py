@@ -1,7 +1,8 @@
 # IMPORTS:
-from gensim.models import KeyedVectors
 from function_definitions import *
 import logging
+import sys
+import os
 # -----------------------------------------------------------------------------------------------------
 
 
@@ -13,15 +14,15 @@ if __name__ == '__main__':
     logging.info("Starting the main process...")
 
     # 1) Setup:
-    set_pandas_output()  # This just improves the Pandas output in the PyCharm terminal
-    user_name = get_local_username()
-    input_file_name = "phrases"
-    input_file_path = f"C:/Users/{user_name}/PycharmProjects/Galytix/{input_file_name}.xlsx"
-    embedding_vectors = "GoogleNews-vectors-negative300"
-    embedding_vectors_location = f"C:/Users/{user_name}/PycharmProjects/Galytix/{embedding_vectors}.bin"
+    set_pandas_output()                 # This just improves the Pandas output in the PyCharm terminal
+    base_directory = get_base_dir()     # Returning the current working directory
+    input_file_name = "phrases.xlsx"
+    embedding_vectors = "GoogleNews-vectors-negative300.bin"
     vectors_file = "vectors.csv"
-    vectors_path = f"C:/Users/{user_name}/PycharmProjects/Galytix/{vectors_file}"
-    pickle_file = f"C:/Users/{user_name}/PycharmProjects/Galytix/w2v_model.pkl"  # optional
+    input_file_path = os.path.join(base_directory, input_file_name)
+    embedding_vectors_location = os.path.join(base_directory, embedding_vectors)
+    vectors_path = os.path.join(base_directory, vectors_file)
+    pickle_file = os.path.join(base_directory, "w2v_model.pkl")  # Optional
 
     # 2) Loading the "phrases" file:
     logging.info("Loading the phrases file from %s", input_file_path)
