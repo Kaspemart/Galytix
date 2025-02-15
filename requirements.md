@@ -5,3 +5,4 @@ openpyxl==3.1.5
 gensim==4.3.3
 seaborn==0.13.2
 matplotlib==3.9.4
+nltk==3.9.1

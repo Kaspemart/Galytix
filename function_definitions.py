@@ -10,6 +10,8 @@ from typing import Tuple, List, Dict
 from gensim.models import word2vec, KeyedVectors
 import matplotlib.pyplot as plt
 import seaborn as sns
+import nltk
+from nltk.corpus import stopwords
 # -----------------------------------------------------------------------------------------------------------------
 
 
@@ -76,6 +78,42 @@ def save_df_to_excel(output_name: str, df: pd.DataFrame, sheet_name: str = "Shee
         logging.exception(f"An error occurred while saving the DataFrame to Excel: {e}.")
         raise
     return None
+
+
+# Download stopwords if not already done
+nltk.download('stopwords')
+stop_words = set(stopwords.words('english'))
+def clean_phrases(df: pd.DataFrame, phrase_column: str = "Phrases") -> pd.DataFrame:
+    """
+    This function cleans the phrases DataFrame by:
+      - Removing duplicate phrases
+      - Removing phrases that are too short (or too long)
+      - Removing phrases that consist entirely of stopwords
+
+    :param df: DataFrame containing the phrases
+    :param phrase_column: Name of the column with the phrases
+    :return: A cleaned DataFrame
+    """
+    # Removing duplicate phrases.
+    df = df.drop_duplicates(subset=phrase_column)
+
+    # Removing outliers by length (= shorter than 5 characters or longer than 300 characters)
+    df = df[df[phrase_column].str.len() > 5]
+    df = df[df[phrase_column].str.len() < 300]
+
+    # Removing phrases which are composed mostly of stopwords
+    def has_few_stopwords(phrase):
+        """This function takes a phrase and removes phrases based on the too many stopwords criteria."""
+        tokens = phrase.lower().split()
+        if not tokens:
+            return False
+
+        # If more than 60% words are stopwords, we will filter it out
+        stopword_ratio = sum(1 for token in tokens if token in stop_words) / len(tokens)  # Calculating the stopword ratio in the phrase
+        return stopword_ratio < 0.6
+
+    df = df[df[phrase_column].apply(has_few_stopwords)]
+    return df
 
 
 def preprocess_text(phrase: str) -> str:
@@ -343,5 +381,6 @@ def get_base_dir():
     environment variable has been set then that value will be used otherwise it defaults to the current working directory.
     """
     return os.environ.get("GALYTIX_BASE_DIR", os.getcwd())
+
 
 
