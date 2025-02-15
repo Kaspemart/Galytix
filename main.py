@@ -1,5 +1,4 @@
 # IMPORTS:
-import numpy as np
 from gensim.models import KeyedVectors
 from function_definitions import *
 # -----------------------------------------------------------------------------------------------------

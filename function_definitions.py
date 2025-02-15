@@ -83,6 +83,10 @@ def preprocess_text(phrase: str) -> str:
     :param phrase: Individual phrase from the phrases file
     :return: Preprocessed phrase
     """
+    # Handling the case when the input is not a string
+    if not isinstance(phrase, str):
+        raise TypeError("Input must be a string")
+
     phrase = phrase.lower()
     phrase = re.sub(r'[^\w\s]', '', phrase)
     return phrase
