@@ -1,0 +1,22 @@
+It looked weird in the readme file, so I include it here, this is how the overall
+structure of this project could be improved further if I had more time:
+
+Galytix/
+├── galytix/
+│   ├── __init__.py
+│   ├── data_io.py
+│   ├── embedding.py
+│   ├── similarity.py
+│   ├── visualization.py
+│   ├── interactive.py
+│   └── utils.py
+├── tests/
+│   ├── __init__.py
+│   ├── test_data_io.py
+│   ├── test_embedding.py
+│   ├── test_similarity.py
+│   └── test_visualization.py
+├── main.py
+├── setup.py
+├── requirements.txt
+└── README.md

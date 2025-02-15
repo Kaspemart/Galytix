@@ -36,6 +36,7 @@ measures, both in batch and on the fly, using Euclidean or cosine distance.
 * function_definitions.py - Includes all functions in this app
 * main.py - Includes the main runnable python file
 * test_functions.py - Includes the unit tests for different parts of the code (not all)
+* future_improvement.txt - Includes this project´s structure improvement suggestion
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 
