@@ -15,37 +15,14 @@ measures, both in batch and on the fly, using Euclidean or cosine distance.
 * The code could be even more OOP-friendly and could be structured into classes for instance
 * There could also be a nice user-friendly interface created
 * The code cold probably be optimised even further with regards to speed and memory efficience
-* I would improve the structure of the project, maybe something like:
-* Galytix/
-├── galytix/
-│   ├── __init__.py
-│   ├── data_io.py
-│   ├── embedding.py
-│   ├── similarity.py
-│   ├── visualization.py
-│   ├── interactive.py
-│   └── utils.py
-├── tests/
-│   ├── __init__.py
-│   ├── test_data_io.py
-│   ├── test_embedding.py
-│   ├── test_similarity.py
-│   └── test_visualization.py
-├── main.py
-├── setup.py
-├── requirements.txt
-└── README.md
+* I would improve the structure of the project and create proper modules
 
 ------------------------------------------------------------------------------------------------------------------------------------------
+
 ## Project info
 * Author: Martin Kasperlik (martin.kasperlik77@seznam.cz)
 * Purpose: To try to convince Galytix that I have solid foundations and that I am teachable in areas that need attention and improvement
 * Python version used: 3.9
-
-------------------------------------------------------------------------------------------------------------------------------------------
-
-## How to run the app
-* 
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 
