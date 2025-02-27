@@ -1,4 +1,6 @@
 # Galytix-Casestudy
+Firstly, please make sure to go here "https://drive.google.com/file/d/0B7XkCwpI5KDYNlNUTTlSS21pQmM" and download the vector file and then copy it to the project folder.
+
 This project is about integrating pretrained Word2Vec embeddings into a data processing pipeline to compute semantic distances between
 phrases. The pipeline downloads and converts one million vectors from a binary format using gensim, assigns each word its corresponding
 embedding, and approximates phrase-level vectors through normalized aggregation of individual word vectors. It then calculates similarity
