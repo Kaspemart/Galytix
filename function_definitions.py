@@ -354,7 +354,7 @@ def load_word_embeddings(vectors_path: str, embedding_vectors_location: str, vec
         # If the saved text file exists, load using memory mapping
         if os.path.exists(vectors_path):
             logging.info("Loading word embeddings from saved file: %s", vectors_path)
-            w2v_model = KeyedVectors.load_word2vec_format(vectors_path, binary=False)
+            w2v_model = KeyedVectors.load_word2vec_format(vectors_path, binary=False, limit=limit)
         else:
             # Otherwise, load from the binary file and save as text
             logging.info("Saved embeddings file not found. Loading from binary file: %s", embedding_vectors_location)
